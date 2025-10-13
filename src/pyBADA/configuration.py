@@ -184,24 +184,38 @@ def getBadaVersionPath(badaFamily, badaVersion):
     return path
 
 
+# def getAircraftPath():
+#     """Get the path to the 'aircraft' resource directory.
+
+#     This function locates the 'aircraft' directory within the pyBADA package
+#     and returns its absolute path.
+
+#     :returns: The absolute path to the 'aircraft' resource directory.
+#     :rtype: str.
+#     """
+
+#     package_name = "pyBADA"
+#     resource_name = "aircraft"
+
+#     # Get the path to the 'aircraft' resource directory
+#     with importlib.resources.as_file(
+#         importlib.resources.files(package_name) / resource_name
+#     ) as resource_path:
+#         return str(resource_path)
+
+
+# Nils' replacement for above getAircraftPath(), where the
+# issue is when I call importlib.resources.files("pyBADA") / "aircraft",
+# Python resolves the path relative to the installed package structure,
+# not relative to my “project root” in GitHub
 def getAircraftPath():
-    """Get the path to the 'aircraft' resource directory.
-
-    This function locates the 'aircraft' directory within the pyBADA package
-    and returns its absolute path.
-
-    :returns: The absolute path to the 'aircraft' resource directory.
-    :rtype: str.
-    """
-
-    package_name = "pyBADA"
-    resource_name = "aircraft"
-
-    # Get the path to the 'aircraft' resource directory
-    with importlib.resources.as_file(
-        importlib.resources.files(package_name) / resource_name
-    ) as resource_path:
-        return str(resource_path)
+    """Get the path to the 'aircraft' directory relative to the src folder."""
+    # Get the directory containing this file
+    current_file = os.path.abspath(__file__)
+    src_dir = os.path.dirname(current_file)  # assumes this file is inside src/pyBADA
+    project_root = os.path.dirname(src_dir)  # go one level up to src/
+    aircraft_path = os.path.join(project_root, "aircraft")
+    return aircraft_path
 
 
 def getDataPath():

@@ -833,6 +833,7 @@ def constantSpeedLevel(
                 )  # [kg/s]
 
             # Compare specific range at current and upper cruise altitudes
+            print('(TAS_up / FUEL_up), (TAS_i / FUEL_i) =', (TAS_up / FUEL_up), (TAS_i / FUEL_i))
             if (TAS_up / FUEL_up) > (TAS_i / FUEL_i):
                 # Check that available ROCD at upper cruise altitude allows a climb step
                 if AC.BADAFamily.BADA4:
@@ -851,6 +852,7 @@ def constantSpeedLevel(
                         deltaTemp=deltaTemp,
                         config=config_i,
                     )  # MCMB Thrust
+                    print('TAS, H_m, deltaTemp, config_i =', TAS, H_m, deltaTemp, config_i)
 
                 flightEvolution = "const" + speedType
                 ESF_i = AC.esf(
@@ -873,7 +875,10 @@ def constantSpeedLevel(
                     * 60
                 )  # [ft/min]
 
-                if ROCD_up >= ROCD_min:
+                print('temp_const, THR_CL, Drag, TAS_up, ESF_i, mass_i, const.g =', temp_const, THR_CL, Drag, TAS_up, ESF_i, mass_i, const.g)
+                print('ROCD_up, ROCD_min =', ROCD_up, ROCD_min)
+                # if ROCD_up >= ROCD_min:
+                if (ROCD_up >= ROCD_min).all():
                     # Compute climb step
                     if speedType == "M":
                         speed = M_up
@@ -1906,7 +1911,6 @@ def constantSpeedROCD(
                 UserWarning,
             )
             go_on = False
-            writeOutputData = True
 
         if writeOutputData:
             # point data

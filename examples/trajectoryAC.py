@@ -3,6 +3,8 @@ Aircraft Trajectory Calculation
 ===============================
 
 Example of BADA3 and BADA4 trajectory using TCL
+
+NOTE: minor edits by NILS to make it usable with BADA 3.16.
 """
 
 from dataclasses import dataclass
@@ -13,6 +15,7 @@ from pyBADA import TCL as TCL
 from pyBADA import atmosphere as atm
 from pyBADA import conversions as conv
 from pyBADA.bada3 import Bada3Aircraft
+from pyBADA.bada3 import Parser as Bada3Parser
 from pyBADA.bada4 import Bada4Aircraft
 from pyBADA.bada4 import Parser as Bada4Parser
 from pyBADA.flightTrajectory import FlightTrajectory as FT
@@ -31,16 +34,16 @@ class target:
 
 badaVersion = "DUMMY"
 
-# allData = Bada3Parser.parseAll(badaVersion=badaVersion)
-allData = Bada4Parser.parseAll(badaVersion=badaVersion)
+allData = Bada3Parser.parseAll(badaVersion=badaVersion)
+# allData = Bada4Parser.parseAll(badaVersion=badaVersion)
 print(allData)
 
 AC = Bada3Aircraft(badaVersion=badaVersion, acName="J2H", allData=allData)
-AC = Bada4Aircraft(
-    badaVersion=badaVersion,
-    acName="Dummy-TWIN",
-    allData=allData,
-)
+# AC = Bada4Aircraft(
+#     badaVersion=badaVersion,
+#     acName="Dummy-TWIN",
+#     allData=allData,
+# )
 
 # Example loading models from files on disk
 # AC = Bada4Aircraft(
@@ -91,7 +94,7 @@ Hp_CR = 33000  # [ft] CRUISing level
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# CLIMB to threshold altitude 1500ft at take-off speed
+print('CLIMB to threshold altitude 1500ft at take-off speed')
 # ------------------------------------------------
 flightTrajectory = TCL.constantSpeedRating(
     AC=AC,
@@ -106,7 +109,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# accelerate according to BADA ARPM for below 3000ft
+print('accelerate according to BADA ARPM for below 3000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -137,7 +140,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# CLIMB to threshold altitude 3000ft
+print('CLIMB to threshold altitude 3000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -155,8 +158,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-
-# accelerate according to BADA ARPM for below 4000ft
+print('accelerate according to BADA ARPM for below 4000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -187,7 +189,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# CLIMB to threshold altitude 4000ft
+print('CLIMB to threshold altitude 4000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -205,8 +207,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-
-# accelerate according to BADA ARPM for below 5000ft
+print('accelerate according to BADA ARPM for below 5000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -237,7 +238,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# CLIMB to threshold altitude 5000ft
+print('CLIMB to threshold altitude 5000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -255,8 +256,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-
-# accelerate according to BADA ARPM for below 6000ft
+print('accelerate according to BADA ARPM for below 6000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -287,7 +287,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# CLIMB to threshold altitude 6000ft
+print('CLIMB to threshold altitude 6000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -305,8 +305,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-
-# accelerate according to BADA ARPM for below 10000ft
+print('accelerate according to BADA ARPM for below 10000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -337,7 +336,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# CLIMB to threshold altitude 10000ft
+print('CLIMB to threshold altitude 10000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -356,7 +355,7 @@ flightTrajectory = TCL.constantSpeedRating(
 ft.append(AC, flightTrajectory)
 
 
-# accelerate according to BADA ARPM for above 10000ft and below crossover altitude
+print('accelerate according to BADA ARPM for above 10000ft and below crossover altitude')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -377,13 +376,14 @@ flightTrajectory = TCL.accDec(
 ft.append(AC, flightTrajectory)
 
 
-# CLIMB to crossover altitude
+print('CLIMB to crossover altitude')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
 # calculate the crosover altitude for climb phase
 crossoverAltitude = conv.m2ft(atm.crossOver(Vcl2, Mcl))
+crossoverAltitude_climb = crossoverAltitude
 
 flightTrajectory = TCL.constantSpeedRating(
     AC=AC,
@@ -398,7 +398,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# climb at M from crossover altitude
+print('climb at M from crossover altitude')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -416,7 +416,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# if not at CR speed -> adapt the speed first (acc/dec)
+print('if not at CR speed -> adapt the speed first (acc/dec)')
 # ------------------------------------------------
 # current values
 Hp, m_final, M_final = ft.getFinalValue(AC, ["Hp", "mass", "M"])
@@ -438,7 +438,7 @@ if M_final < Mcr:
     )
     ft.append(AC, flightTrajectory)
 
-# CRUISE for 200 NM
+print('CRUISE for 200 NM')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -457,7 +457,7 @@ flightTrajectory = TCL.constantSpeedLevel(
 )
 ft.append(AC, flightTrajectory)
 
-# CRUISE Step for 300 NM
+print('CRUISE Step for 300 NM')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -479,7 +479,7 @@ flightTrajectory = TCL.constantSpeedLevel(
 )
 ft.append(AC, flightTrajectory)
 
-# acc/dec to DESCENT speed during the descend
+print('acc/dec to DESCENT speed during the descend')
 # ------------------------------------------------
 # current values
 Hp, m_final, M_final = ft.getFinalValue(AC, ["Hp", "mass", "M"])
@@ -498,13 +498,14 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# descend to crossover altitude
+print('descend to crossover altitude')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
 
 # calculate the crosover altitude for descend phase
 crossoverAltitude = conv.m2ft(atm.crossOver(Vdes2, Mdes))
+crossoverAltitude_descent = crossoverAltitude
 
 flightTrajectory = TCL.constantSpeedRating(
     AC=AC,
@@ -519,7 +520,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# descend to FL100
+print('descend to FL100')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -537,7 +538,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# decelerate according to BADA ARPM for below FL100
+print('decelerate according to BADA ARPM for below FL100')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -568,7 +569,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# descend to 6000ft
+print('descend to 6000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -586,7 +587,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-# decelerate according to BADA ARPM for below 6000
+print('decelerate according to BADA ARPM for below 6000')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -617,7 +618,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-# descend to 5000ft
+print('descend to 5000ft')
 # ------------------------------------------------
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -635,8 +636,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope to next altitude threshold
+print('descend on ILS with 3deg glideslope to next altitude threshold')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -672,8 +672,7 @@ elif AC.BADAFamily.BADA4:
 
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope while decelerating
+print('descend on ILS with 3deg glideslope while decelerating')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -708,8 +707,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope to next altitude threshold
+print('descend on ILS with 3deg glideslope to next altitude threshold')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -730,8 +728,7 @@ if Hp > 2000:
     )
     ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope while decelerating
+print('descend on ILS with 3deg glideslope while decelerating')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -766,8 +763,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope to next altitude threshold
+print('descend on ILS with 3deg glideslope to next altitude threshold')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -788,8 +784,7 @@ if Hp > 1500:
     )
     ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope while decelerating
+print('descend on ILS with 3deg glideslope while decelerating')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -840,8 +835,7 @@ elif AC.BADAFamily.BADA4:
     )
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope to next altitude threshold
+print('descend on ILS with 3deg glideslope to next altitude threshold')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -862,7 +856,7 @@ if Hp > 1000:
     )
     ft.append(AC, flightTrajectory)
 
-# descend on ILS with 3deg glideslope while decelerating
+print('descend on ILS with 3deg glideslope while decelerating')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -913,8 +907,7 @@ elif AC.BADAFamily.BADA4:
     )
 ft.append(AC, flightTrajectory)
 
-
-# descend on ILS with 3deg glideslope to next altitude threshold
+print('descend on ILS with 3deg glideslope to next altitude threshold')
 # ------------------------------------------------
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -961,3 +954,27 @@ plt.show()
 # ------------------------------------------------
 # ft.save2csv(os.path.join(grandParentDir, "flightTrajectory_export"), separator=",")
 # ft.save2xlsx(os.path.join(grandParentDir, "flightTrajectory_export"))
+
+#%% Plot added by Nils
+
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+for _, seg in df.groupby((df["comment"] != df["comment"].shift()).cumsum()):
+    # ax.plot(seg["dist"], seg["Hp"], "-", label=seg["comment"].iloc[0])
+    # ax.plot(seg["time"], seg["Hp"], "-", label=seg["comment"].iloc[0])
+    ax.plot(seg["TAS"], seg["Hp"], "-", label=seg["comment"].iloc[0])
+ax.axhline(crossoverAltitude_climb, ls='--')
+ax.axhline(crossoverAltitude_descent, ls='--')
+
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.grid(True)
+ax.set_xlabel("Distance [NM]")
+ax.set_ylabel("Pressure Altitude [ft]")
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0), ncol=2)
+
+plt.show()
+
+
