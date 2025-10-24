@@ -43,7 +43,7 @@ AC = Bada3Aircraft(
     badaVersion=badaVersion,
     # acName="A20N",
     acName="A321",
-    allData=allData
+    allData=allData,
 )
 
 # create a Flight Trajectory object to store the output from TCL segment calculations
@@ -86,8 +86,8 @@ Hp_CR = 40000  # [ft] CRUISing level
     phase="Descent"
 )  # BADA Descent speed schedule
 
-#%% CLIMB
-#%% constantSpeedROCD from 0 to 1499
+# %% CLIMB
+# %% constantSpeedROCD from 0 to 1499
 
 flightTrajectory = TCL.constantSpeedRating(
     AC=AC,
@@ -102,7 +102,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -135,7 +135,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 1500 to 2999
+# %% constantSpeedROCD from 1500 to 2999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -152,7 +152,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -185,7 +185,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 3000 to 3999
+# %% constantSpeedROCD from 3000 to 3999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -202,7 +202,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -235,7 +235,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 4000 to 4999
+# %% constantSpeedROCD from 4000 to 4999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -252,7 +252,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -285,7 +285,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 5000 to 5999
+# %% constantSpeedROCD from 5000 to 5999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -302,7 +302,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -335,7 +335,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 6000 to 9999
+# %% constantSpeedROCD from 6000 to 9999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -352,7 +352,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -385,7 +385,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 10000 ft to Mach transition altitude (also called "crossover altitude")
+# %% constantSpeedROCD from 10000 ft to Mach transition altitude (also called "crossover altitude")
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -405,7 +405,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD above Mach transition altitude
+# %% constantSpeedROCD above Mach transition altitude
 
 # current values
 Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
@@ -422,7 +422,7 @@ flightTrajectory = TCL.constantSpeedRating(
     deltaTemp=deltaTemp,
 )
 ft.append(AC, flightTrajectory)
-r'''
+r"""
 #%% DESCENT
 #%% constantSpeedROCD above Mach transition altitude
 
@@ -780,8 +780,8 @@ flightTrajectory = TCL.constantSpeedRating(
     deltaTemp=deltaTemp,
 )
 ft.append(AC, flightTrajectory)
-'''
-#%%
+"""
+# %%
 
 # print and plot final trajectory
 df = ft.getFT(AC=AC)
@@ -793,10 +793,10 @@ for _, seg in df.groupby((df["comment"] != df["comment"].shift()).cumsum()):
     # ax.plot(seg["time"], seg["Hp"], "-", label=seg["comment"].iloc[0])
 ax.set_xlabel("TAS [kt]")
 ax.set_ylabel("Hp [ft]")
-ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0), ncol=2)
+ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2)
 plt.show()
 
-#%% FUEL FLOW
+# %% FUEL FLOW
 
 crossAlt = conv.ft2m(crossoverAltitude)
 
@@ -806,35 +806,36 @@ mass = AC.MREF
 Hp_ft_vals = []
 ff_vals = []
 
-for Hp, CAS, TAS, M, ROCD in zip(df['Hp'].to_numpy(), df['CAS'].to_numpy(), df['TAS'].to_numpy(), df['M'].to_numpy(), df['ROCD'].to_numpy()):
-    
+for Hp, CAS, TAS, M, ROCD in zip(
+    df["Hp"].to_numpy(),
+    df["CAS"].to_numpy(),
+    df["TAS"].to_numpy(),
+    df["M"].to_numpy(),
+    df["ROCD"].to_numpy(),
+):
     Hp = conv.ft2m(Hp)
     TAS = conv.kt2ms(TAS)
     CAS = conv.kt2ms(CAS)
     ROCD = conv.ft2m(ROCD / 60)  # NILS: ROCD in `df` in ft/min, convert to m/s
-    
+
     # atmosphere properties
-    theta, delta, sigma = atm.atmosphereProperties(
-        h=Hp, deltaTemp=deltaTemp
-    )
-    
+    theta, delta, sigma = atm.atmosphereProperties(h=Hp, deltaTemp=deltaTemp)
+
     # determine the aerodynamic configuration if necesary
     config = AC.flightEnvelope.getConfig(
         h=Hp, phase="Climb", v=CAS, mass=mass, deltaTemp=deltaTemp
     )
-    
+
     # calculate Energy Share Factor depending if aircraft is flying constant M or CAS (based on crossover altitude)
     if Hp < crossAlt:
         ESF = AC.esf(
             h=Hp, flightEvolution="constCAS", M=M, deltaTemp=deltaTemp
         )
     else:
-        ESF = AC.esf(
-            h=Hp, flightEvolution="constM", M=M, deltaTemp=deltaTemp
-        )
-        
+        ESF = AC.esf(h=Hp, flightEvolution="constM", M=M, deltaTemp=deltaTemp)
+
     adaptedThrust = False
-    
+
     n = 1.0
     CL = AC.CL(sigma=sigma, mass=mass, tas=TAS, nz=n)
     CD = AC.CD(CL=CL, config=config)
@@ -858,23 +859,32 @@ for Hp, CAS, TAS, M, ROCD in zip(df['Hp'].to_numpy(), df['CAS'].to_numpy(), df['
         config=config,
         adapted=adaptedThrust,
     )
-    
+
     fl = int(utils.proper_round(conv.m2ft(Hp) / 100))
     Hp_ft = conv.m2ft(Hp)
     print(f"{fl:>4d}  {Hp_ft:>8.0f}  {config:>3}  {M:>6.3f}  {ff:>10.6f}")
 
     Hp_ft_vals.append(Hp_ft)
     ff_vals.append(float(ff))
-    
 
-#%% Fuel flow vs altitude
+
+# %% Fuel flow vs altitude
 
 fig, ax = plt.subplots()
 
-ax.plot(df["Hp"], np.diff(df['FUELCONSUMED'], prepend=df['FUELCONSUMED'][0]) / np.diff(df['time'], prepend=df['time'][0]), label='np.diff(FUELCONSUMED)')
-ax.plot(df["Hp"], np.gradient(df['FUELCONSUMED']) / np.gradient(df['time']), label='np.gradient(FUELCONSUMED)')
-ax.plot(df["Hp"], df["FUEL"], label='FUEL')
-ax.plot(Hp_ft_vals, ff_vals, label='Calculation (constant n=1)')
+ax.plot(
+    df["Hp"],
+    np.diff(df["FUELCONSUMED"], prepend=df["FUELCONSUMED"][0])
+    / np.diff(df["time"], prepend=df["time"][0]),
+    label="np.diff(FUELCONSUMED)",
+)
+ax.plot(
+    df["Hp"],
+    np.gradient(df["FUELCONSUMED"]) / np.gradient(df["time"]),
+    label="np.gradient(FUELCONSUMED)",
+)
+ax.plot(df["Hp"], df["FUEL"], label="FUEL")
+ax.plot(Hp_ft_vals, ff_vals, label="Calculation (constant n=1)")
 
 ax.set_xlabel("Altitude (ft)")
 ax.set_ylabel("Fuel Flow (kg/s)")
@@ -882,13 +892,13 @@ ax.legend()
 
 plt.show()
 
-#%% TSFC vs altitude
+# %% TSFC vs altitude
 
 TSFC = df["FUEL"] / df["THR"] * 1e6
 
 fig, ax = plt.subplots()
 
-ax.plot(df["Hp"], TSFC, label='TSFC')
+ax.plot(df["Hp"], TSFC, label="TSFC")
 
 ax.set_xlabel("Altitude (ft)")
 ax.set_ylabel("TSFC (g/kN/s)")
@@ -896,22 +906,25 @@ ax.legend()
 
 plt.show()
 
-#%%
+# %%
+
 
 def mdot_f_ndim_func(mdot_f, P_02, T_02, A, LCV, C_p):
     """(3) in medium_paper_2010_perfemissPESO_veramorales"""
     return mdot_f * LCV / (P_02 * A * np.sqrt(C_p * T_02))
 
+
 def F_G_ndim_func(F_G, P_amb, A_N, P_02):
     """(5) in medium_paper_2010_perfemissPESO_veramorales"""
     return (F_G + P_amb * A_N) / (A_N * P_02)
 
-#%%
+
+# %%
 
 import pyromat as pm
 from ambiance import Atmosphere
 
-air = pm.get('ig.air')
+air = pm.get("ig.air")
 
 A_nozzle_core = 0.34308
 A_nozzle_bp = 1.05524
@@ -927,34 +940,33 @@ T02_array = np.zeros_like(Cp2_array)
 pamb_array = np.zeros_like(Cp2_array)
 
 for i, (h_ft, M) in enumerate(zip(df["Hp"], df["M"])):
-    
     h_m = h_ft * 0.3048
-    
+
     amb = Atmosphere(h_m)
     p0, T0 = amb.pressure[0], amb.temperature[0]
-    
+
     Cp = air.cp(T=T0, p=p0)
     gamma = air.gam(T=T0, p=p0)
-    p02 = p0 * (1 + (gamma - 1)/2 * M**2)**(gamma / (gamma - 1))
-    T02 = T0 * (1 + (gamma - 1)/2 * M**2)
-    
+    p02 = p0 * (1 + (gamma - 1) / 2 * M**2) ** (gamma / (gamma - 1))
+    T02 = T0 * (1 + (gamma - 1) / 2 * M**2)
+
     Cp2_array[i] = Cp
     p02_array[i] = p02
     T02_array[i] = T02
     pamb_array[i] = p0
-    
+
 
 mdot_f_ndim_array = mdot_f_ndim_func(
     mdotf_array, p02_array, T02_array, A_nozzle_tot, LCV, Cp2_array
 )
 F_G_ndim_array = F_G_ndim_func(
-    Tgross_array, pamb_array, A_nozzle_tot, p02_array)
+    Tgross_array, pamb_array, A_nozzle_tot, p02_array
+)
 
-#%%
+# %%
 
 fig, ax = plt.subplots()
 
 ax.scatter(F_G_ndim_array, mdot_f_ndim_array)
 
 plt.show()
-

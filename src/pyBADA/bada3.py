@@ -2930,7 +2930,7 @@ class ARPM:
                         )
                     )
                 )
-                
+
                 n = 1
                 while n < len(speed):
                     if speed[n] > speed[n - 1]:

@@ -23,7 +23,8 @@ from pyBADA.bada4 import Bada4Aircraft
 from pyBADA.bada4 import Parser as Bada4Parser
 from pyBADA.flightTrajectory import FlightTrajectory as FT
 
-engine_type = 'turbofan'
+engine_type = "turbofan"
+
 
 @dataclass
 class target:
@@ -43,9 +44,9 @@ allData = Bada3Parser.parseAll(badaVersion=badaVersion)
 AC = Bada3Aircraft(
     badaVersion=badaVersion,
     # acName="A20N",
-    acName="A321" if engine_type == 'turbofan' else "AT76",
+    acName="A321" if engine_type == "turbofan" else "AT76",
     # acName="AT76",
-    allData=allData
+    allData=allData,
 )
 
 # create a Flight Trajectory object to store the output from TCL segment calculations
@@ -54,17 +55,17 @@ ft = FT()
 # default parameters
 deltaTemp = 0  # [K] delta temperature from ISA
 
-#%%
+# %%
 
 # rating_list = ["MCMB", "MTKF", "MCRZ"]
 rating_list = ["MCMB"]
 # rating_list = ["MTKF"]
-if engine_type == 'turbofan':
+if engine_type == "turbofan":
     h_array = np.linspace(0, 12e3, 13)
     M_array = np.linspace(0, 0.9, 10)
-elif engine_type == 'turboprop':
+elif engine_type == "turboprop":
     h_array = np.linspace(0, 7620, 10)
-    M_array = np.linspace(0, 0.42, 10)#[1:]
+    M_array = np.linspace(0, 0.42, 10)  # [1:]
 h_grid, M_grid = np.meshgrid(h_array, M_array)
 F_net_grid = np.zeros_like(h_grid)
 TSFC_grid = np.zeros_like(h_grid)
@@ -73,44 +74,50 @@ ff_grid = np.zeros_like(h_grid)
 # fig, ax = plt.subplots()
 
 for rating in rating_list:
-
     for (i, j), h in np.ndenumerate(h_grid):
         M = M_grid[i, j]
         amb = Atmosphere(h)
         a = amb.speed_of_sound[0]
-        
+
         TAS = M * a
         T_net = AC.Thrust(
-            h=h, deltaTemp=0, rating=rating, v=TAS, config="IC",
+            h=h,
+            deltaTemp=0,
+            rating=rating,
+            v=TAS,
+            config="IC",
         )
         FF = AC.ff(
-            h=h, v=TAS, T=T_net, config='IC', flightPhase='Climb',
+            h=h,
+            v=TAS,
+            T=T_net,
+            config="IC",
+            flightPhase="Climb",
         )
         TSFC = FF / T_net
-        
+
         F_net_grid[i, j] = T_net / 2
         TSFC_grid[i, j] = TSFC
         ff_grid[i, j] = FF / 2
-
 
     # ax.scatter(F_net_grid / 1e3, TSFC_grid * 1e6)
 
 # plt.show()
 
-if engine_type == 'turbofan':
-    np.save('h_grid_tfan.npy', h_grid)
-    np.save('M_grid_tfan.npy', M_grid)
-    np.save('Tnet_grid_tfan.npy', F_net_grid)
-    np.save('TSFC_grid_tfan.npy', TSFC_grid)
-    np.save('ff_grid_tfan.npy', ff_grid)
-elif engine_type == 'turboprop':
-    np.save('h_grid_tprop.npy', h_grid)
-    np.save('M_grid_tprop.npy', M_grid)
-    np.save('Tnet_grid_tprop.npy', F_net_grid)
-    np.save('TSFC_grid_tprop.npy', TSFC_grid)
-    np.save('ff_grid_tprop.npy', ff_grid)
+# if engine_type == "turbofan":
+#     np.save("h_grid_tfan.npy", h_grid)
+#     np.save("M_grid_tfan.npy", M_grid)
+#     np.save("Tnet_grid_tfan.npy", F_net_grid)
+#     np.save("TSFC_grid_tfan.npy", TSFC_grid)
+#     np.save("ff_grid_tfan.npy", ff_grid)
+# elif engine_type == "turboprop":
+#     np.save("h_grid_tprop.npy", h_grid)
+#     np.save("M_grid_tprop.npy", M_grid)
+#     np.save("Tnet_grid_tprop.npy", F_net_grid)
+#     np.save("TSFC_grid_tprop.npy", TSFC_grid)
+#     np.save("ff_grid_tprop.npy", ff_grid)
 
-#%%
+# %%
 
 fig, ax = plt.subplots(figsize=(8, 6))
 
@@ -119,14 +126,14 @@ M_levels = np.unique(M_array)
 M_levels[-1] -= 1e-6
 # cs = ax.contour(F_net_grid/1000, TSFC_grid, M_grid, levels=M_levels, colors='blue', linewidths=0.8, zorder=10, extend='max')
 # ax.clabel(cs, fmt='%0.3f', fontsize=8)
-ax.scatter(F_net_grid/1000, TSFC_grid, color='blue')
+ax.scatter(F_net_grid / 1000, TSFC_grid, color="blue")
 
 # Overlay contour of altitude (h_array)
-h_levels = np.unique(h_array)/1000
+h_levels = np.unique(h_array) / 1000
 h_levels[-1] -= 1e-6
 # cs2 = ax.contour(F_net_grid/1000, TSFC_grid, h_grid/1000, levels=h_levels, colors='red', linestyles='dashed', linewidths=0.8, zorder=10, extend='max')
 # ax.clabel(cs2, fmt='%0.3f', fontsize=8)
-ax.scatter(F_net_grid/1000, TSFC_grid, color='red')
+ax.scatter(F_net_grid / 1000, TSFC_grid, color="red")
 
 # Labels and style
 ax.set_xlabel("Net Thrust [kN]")
@@ -136,5 +143,3 @@ ax.set_ylabel("Sp. Fuel Consumption [g/(kN·s)]")
 
 # plt.tight_layout()
 plt.show()
-
-

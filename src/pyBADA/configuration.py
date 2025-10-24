@@ -212,7 +212,9 @@ def getAircraftPath():
     """Get the path to the 'aircraft' directory relative to the src folder."""
     # Get the directory containing this file
     current_file = os.path.abspath(__file__)
-    src_dir = os.path.dirname(current_file)  # assumes this file is inside src/pyBADA
+    src_dir = os.path.dirname(
+        current_file
+    )  # assumes this file is inside src/pyBADA
     project_root = os.path.dirname(src_dir)  # go one level up to src/
     aircraft_path = os.path.join(project_root, "aircraft")
     return aircraft_path

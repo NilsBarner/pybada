@@ -1,0 +1,27 @@
+Cruise calculation using BADA model V3.16
+AIRCRAFT: 
+   ICAO_AIRCRAFT_CODE: E290
+   ENGINE:             PW1919G
+
+CALCULATION CONDITIONS: 
+   Mass:    49000kg
+   Mach:     .820
+   ISA Conditions
+   Atmosphere Model: New ISA Model
+
+RESULTS: 
+================================================================
+   Hp       Mass    CAS     Mach    TAS   Fuel Flow     Drag
+  [ft]      [kg]    [kt]            [kt]   [kg/s  ]      [N]
+================================================================
+ 41000     49000   243.3    .820   470.3     .42753     33101
+ 41000     49000   243.3    .820   470.3     .42753     33101
+SUCCESSFUL
+
+Disclaimer:
+   All materials, information, software, products and services included in or available through this website are provided "as is" and "as available".
+   The contents are provided without warranties of any kind, either express or implied.
+   In particular, EUROCONTROL does not warrant that the contents are accurate, reliable, complete, comprehensive, correct or up-to-date,
+   that this web site will be available at any particular time or location, that any defects or errors will be corrected or that the
+   content is free of viruses or other harmful components.
+   EUROCONTROL shall endeavour to correct any error brought to its attention.

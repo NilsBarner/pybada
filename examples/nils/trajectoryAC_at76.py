@@ -37,11 +37,7 @@ badaVersion = "bada_316"
 
 allData = Bada3Parser.parseAll(badaVersion=badaVersion)
 
-AC = Bada3Aircraft(
-    badaVersion=badaVersion,
-    acName="AT76",
-    allData=allData
-)
+AC = Bada3Aircraft(badaVersion=badaVersion, acName="AT76", allData=allData)
 
 # create a Flight Trajectory object to store the output from TCL segment calculations
 ft = FT()
@@ -82,8 +78,8 @@ Hp_CR = 25000  # [ft] CRUISing level
     phase="Descent"
 )  # BADA Descent speed schedule
 
-#%% CLIMB
-#%% constantSpeedROCD from 0 to 499
+# %% CLIMB
+# %% constantSpeedROCD from 0 to 499
 
 flightTrajectory = TCL.constantSpeedRating(
     AC=AC,
@@ -98,7 +94,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -131,7 +127,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 500 to 999
+# %% constantSpeedROCD from 500 to 999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -148,7 +144,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -181,7 +177,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 1000 to 1499
+# %% constantSpeedROCD from 1000 to 1499
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -198,7 +194,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 
 # current values
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
@@ -231,7 +227,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 1500 to 9999
+# %% constantSpeedROCD from 1500 to 9999
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -248,7 +244,7 @@ flightTrajectory = TCL.constantSpeedRating(
 )
 ft.append(AC, flightTrajectory)
 
-#%% accDec at constant altitude to next ARPM speed
+# %% accDec at constant altitude to next ARPM speed
 # NILS: this segment is superfluous when Vcl1 = Vcl2 (length 0)
 
 # current values
@@ -282,7 +278,7 @@ flightTrajectory = TCL.accDec(
 )
 ft.append(AC, flightTrajectory)
 
-#%% constantSpeedROCD from 10000 ft to Mach transition altitude (also called "crossover altitude")
+# %% constantSpeedROCD from 10000 ft to Mach transition altitude (also called "crossover altitude")
 
 Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 
@@ -290,7 +286,6 @@ Hp, m_final, CAS_final = ft.getFinalValue(AC, ["Hp", "mass", "CAS"])
 crossoverAltitude = conv.m2ft(atm.crossOver(Vcl2, Mcl))
 
 if crossoverAltitude < Hp_CR:
-
     flightTrajectory = TCL.constantSpeedRating(
         AC=AC,
         speedType="CAS",
@@ -303,12 +298,12 @@ if crossoverAltitude < Hp_CR:
         deltaTemp=deltaTemp,
     )
     ft.append(AC, flightTrajectory)
-    
+
     ##% constantSpeedROCD above Mach transition altitude
 
     # current values
     Hp, m_final = ft.getFinalValue(AC, ["Hp", "mass"])
-    
+
     flightTrajectory = TCL.constantSpeedRating(
         AC=AC,
         speedType="M",
@@ -321,9 +316,8 @@ if crossoverAltitude < Hp_CR:
         deltaTemp=deltaTemp,
     )
     ft.append(AC, flightTrajectory)
-    
+
 else:
-    
     flightTrajectory = TCL.constantSpeedRating(
         AC=AC,
         speedType="CAS",
@@ -336,7 +330,7 @@ else:
         deltaTemp=deltaTemp,
     )
     ft.append(AC, flightTrajectory)
-r'''
+r"""
 #%% DESCENT
 #%% constantSpeedROCD above Mach transition altitude
 
@@ -695,8 +689,8 @@ flightTrajectory = TCL.constantSpeedRating(
     deltaTemp=deltaTemp,
 )
 ft.append(AC, flightTrajectory)
-'''
-#%%
+"""
+# %%
 
 # print and plot final trajectory
 df = ft.getFT(AC=AC)
@@ -705,10 +699,9 @@ fig, ax = plt.subplots(figsize=(8, 6))
 for _, seg in df.groupby((df["comment"] != df["comment"].shift()).cumsum()):
     print('seg["ROCD"][0] =', seg["ROCD"].to_numpy()[0])
     ax.plot(seg["TAS"], seg["Hp"], "-", label=seg["comment"].iloc[0])
-    # ax.plot(seg["CAS"], seg["Hp"], "-", label=seg["comment"].iloc[0])    
+    # ax.plot(seg["CAS"], seg["Hp"], "-", label=seg["comment"].iloc[0])
     # ax.plot(seg["time"], seg["Hp"], "-", label=seg["comment"].iloc[0])
 ax.set_xlabel("TAS [kt]")
 ax.set_ylabel("Hp [ft]")
-ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0), ncol=2)
+ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2)
 plt.show()
-
